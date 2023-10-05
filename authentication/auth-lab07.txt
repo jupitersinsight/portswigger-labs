@@ -1,0 +1,23 @@
+This lab's two-factor authentication can be bypassed.
+You have already obtained a valid username and password, but do not have access to the user's 2FA verification code. To solve the lab, access Carlos's account page.
+
+Your credentials: wiener:peter
+Victim's credentials carlos:montoya
+
+
+
+PROVA DI LOGIN wiener:peter
+/login1  ===>> username:password
+
+/login2  ===>> 4-digit code
+
+/my-account  ===>> user already
+
+
+
+PROVA DI BYPASS 2FA carlos:montoya
+/login1 ===>> ok
+
+/login2 modificato in /my-account
+
+/my-account ===>> ok

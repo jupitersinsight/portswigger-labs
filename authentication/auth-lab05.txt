@@ -1,0 +1,16 @@
+This lab is vulnerable to username enumeration. It uses account locking, but this contains a logic flaw.
+To solve the lab, enumerate a valid username, brute-force this user's password, then access their account page.
+
+
+INDIVIDUARE IL LIMITE DI TENTATIVI PER SINGOLO UTENTE.
+Limite tentativi = 5
+
+INVIARE 5 RICHIESTE CON PASSWORD CASUALE PER OGNI UTENTE.
+Per le richieste inviate da un utente esistente, il server restituisce il messaggio di errore "You have made too many incorrect login attempts." (oltre a un leggero ritardo nella risposta)
+
+PROSEGUIRE CON UN ATTACCO DI BRUTE FORCE USANDO IL NOME UTENTE INDIVIDUATO E UNA LISTA DI PASSWORD.
+Per la coppia di credenziali corrette, il server non restituisce il messaggio di errore "You have made too many incorrect login attempts.".
+
+
+ATTENDERE SBLOCCO ACCOUNT DOPO 1 MINUTO E RIPETERE IL LOGIN CON LE CREDENZIALI CORRETTE.
+

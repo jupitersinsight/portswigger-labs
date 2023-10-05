@@ -1,0 +1,34 @@
+This lab is vulnerable to username enumeration using its response times.
+To solve the lab, enumerate a valid username, brute-force this user's password, then access their account page.
+
+Your credentials: wiener:peter
+
+
+
+
+
+1) ACCESSO CON CREDENZIALI FORNITE
+Tempo risposta <100ms
+
+2) ACCESSO CON USERNAME GIUSTO E PASSWORD SBAGLIATA DI 30 CARATTERI
+Tempo risposta >200ms
+
+3) ACCESSO CON USERNAME ERRATO E PASSDOWRD SBAGLIATA DI 30 CARATTERI
+Tempo risposta <100ms
+
+
+
+ATTENZIONE BLOCCO IP PER 30 MINUTI SE TROPPE RICHIESTE ERRATE...
+ALTERNARE 1 ACCESSO CORRETTO OGNI 2 ACCESSI ERRATI
+
+
+SCRIPT...
+
+Testare lista nomi utente con password casuale di 30 CARATTERI
+    Ritornare nome utente se il tempo della risposta eccede 200ms
+
+Testare lista password con nome utente corretto
+    Ritornare password se status code è uguale a 302
+
+Alternare tentativi di login a login con credenziali corrette per evitare blocco IP per 30 minuti NOOOOOO
+PER AGGIRARE IL BLOCCO USARE HEADER X-Forwarded-For: [valore numero che cresce a ogni richiesta]

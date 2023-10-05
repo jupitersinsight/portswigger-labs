@@ -1,0 +1,40 @@
+This lab is vulnerable to username enumeration and password brute-force attacks.
+It has an account with a predictable username and password, which can be found in the following wordlists:
+
+
+To solve the lab, enumerate a valid username, brute-force this user's password, then access their account page.
+
+
+
+
+1) VERIFICARE SE PAGINA RESTITUISCE MESSAGGI DI ERRORE SPECIFICI
+
+Inserendo solo username errato: Invalid username
+Inserendo username corretto e password errato: Incorrect password
+
+Usando Burp Intruder con grep-match su lista di stringhe (che include "Invalid username"), trovato utente valido: app01
+Usando Burp Intruder con grep-match su lista di stringhe (che include "Incorrect password"), trovata password valida: daniel   --- Status pagina 302
+
+
+
+
+
+
+---------------------------------------------------------------------------
+
+STRUTTURA SCRIPT
+_________________
+
+PARAMETRI FISSI: toek_sessione, indirizzi_proxy
+
+ARGOMENTI: wordlist.txt
+
+1) Fuzz dell'applicazione con nomi utenti per trovare nome utente
+-   restituisce nome utente quando non c'è match con errore "Invalid username"
+
+2) Fuzz dell'applicazione con password per trovare quella corretta
+- restituisce password quando cambia il codice dello stato della risposta è diverso è uguale a 302
+
+
+
+

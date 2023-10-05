@@ -1,0 +1,19 @@
+This lab is subtly vulnerable to username enumeration and password brute-force attacks.
+It has an account with a predictable username and password
+
+
+
+
+1) USERNAME ENUMERATION
+TESTANDO CON BURP INTRUDER CON GREP MATCH SU STRINGA "Invalid username or password.":
+Nome utente corretto e password errata restituisce messaggio: "Invalid username or password"   ----- MANCA IL PUNTO FINALE
+
+2) PASSWORD ENUMERATION
+TESTANDO CON BURP INTRUDER FLAG PER STATUS 302
+
+
+
+
+
+
+

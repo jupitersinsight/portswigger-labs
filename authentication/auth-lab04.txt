@@ -1,0 +1,12 @@
+This lab is vulnerable due to a logic flaw in its password brute-force protection.
+To solve the lab, brute-force the victim's password, then log in and access their account page.
+
+Your credentials: wiener:peter
+Victim's username: carlos
+
+
+
+
+TENTATIVO DIRETTAMENTE CON SCRIPT PER SUPERARE LIMITAZIONI DI BURP COMMUNITY.
+ALTERNARE LOGIN CORRETTI A TENTATIVI DI BRUTE FORCE.
+

